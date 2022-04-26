@@ -18,20 +18,43 @@ class Pet(owner: String) {
     constructor(): this("cxk")
 }
 
-// 抽象类
+// 使用open代表该类开放继承
 open class Remote {
+    open val url = "baidu.com"
     open fun execute(){}
 }
+// 抽象类
 abstract class BaseRemote: Remote() {
+    // 覆盖属性
+    // 可以用一个 var 属性覆盖一个 val 属性，但反之则不行
+    override val url = "google.com"
     // 一个抽象成员覆盖一个非抽象的开放成员
     abstract override fun execute()
+
+    open fun wrapper(){
+        println("BaseRemote wrapper")
+    }
 }
-class WarnRemote: BaseRemote(){
+
+interface HTTP {
+    fun wrapper(){
+        println("HTTP wrapper")
+    }
+}
+
+class WarnRemote: BaseRemote(), HTTP{
     override fun execute() {
         TODO("Not yet implemented")
+    }
+    override fun wrapper(){
+        // 调用父类的方法
+        super<BaseRemote>.wrapper();
+        // 调用特定接口的方法
+        super<HTTP>.wrapper();
+        println("WarnRemote wrapper")
     }
 }
 
 fun main(){
-    Person("cxk")
+
 }
